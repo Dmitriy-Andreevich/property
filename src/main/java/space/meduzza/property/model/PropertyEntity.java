@@ -13,11 +13,13 @@ import java.util.List;
 @Entity
 @Table(name = "properties")
 public class PropertyEntity extends BaseEntity {
+    private String title;
     private String description;
     private String address;
     private Point coordinates;
     private int roomCount;
     private float square;
+    private float cost;
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)

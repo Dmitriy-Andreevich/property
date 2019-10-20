@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Careers &mdash; Website Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" th:href="@{/css/custom-bs.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}">
+    <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
+    <link rel="stylesheet" th:href="@{/fonts/line-icons/style.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- END VENDOR CSS-->
+    <!-- BEGIN Custom CSS-->
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/style/style.css}">-->
+    <!-- END Custom CSS-->
+</head>
+<body id="top">
+<div class="site-wrap">
+    <th:block layout:replace="~{fragments/menu :: nav}"/>
+    <th:block layout:replace="~{fragments/menu :: leftnav}"/>
+
+    <!--START CONTENT-->
+    <div>
+        <th:block layout:fragment="content"/>
+    </div>
+    <!--END CONTENT-->
+
+    <!--START FOOTER-->
+    <th:block layout:replace="~{fragments/footer :: footer}"/>
+    <!--END FOOTER-->
+
+</div>
+
+<!-- BEGIN VENDOR JS-->
+<script th:src="@{js/jquery.min.js}"></script>
+<script th:src="@{js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{js/isotope.pkgd.min.js}"></script>
+<script th:src="@{js/stickyfill.min.js}"></script>
+<script th:src="@{js/jquery.fancybox.min.js}"></script>
+<script th:src="@{js/jquery.easing.1.3.js}"></script>
+
+<script th:src="@{js/jquery.waypoints.min.js}"></script>
+<script th:src="@{js/jquery.animateNumber.min.js}"></script>
+<script th:src="@{js/owl.carousel.min.js}"></script>
+
+<!-- <script src="js/bootstrap-select.min.js"></script> -->
+
+<script th:src="@{js/custom.js}"></script>
+<!-- BEGIN VENDOR JS-->
+<!-- BEGIN PAGE VENDOR JS-->
+<th:block layout:fragment="~{scripts-page-vendor}"/>
+<!-- END PAGE VENDOR JS-->
+<!-- BEGIN PAGE LEVEL JS-->
+<th:block layout:fragment="~{scripts-page}"/>
+<!-- END PAGE LEVEL JS-->
+<!-- BEGIN Custom JS-->
+<!--<script th:src="@{/script/script.js}"></script>-->
+<!-- END Custom JS-->
+</body>
+</html>

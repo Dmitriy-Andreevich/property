@@ -2,12 +2,11 @@ package space.meduzza.property.controller;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import space.meduzza.property.controller.input.PropertyGetAllByCoordinatesInput;
 import space.meduzza.property.model.PropertyEntity;
 import space.meduzza.property.service.property.PropertyService;
 import space.meduzza.property.service.user.UserService;
@@ -36,22 +35,26 @@ public class PropertyController {
 
     @PostMapping("/create")
     String createProperty(
+            @RequestParam String title,
             @RequestParam String description,
             @RequestParam String address,
             @RequestParam Float latitude,
             @RequestParam Float longitude,
             @RequestParam int roomCount,
             @RequestParam float square,
+            @RequestParam float cost,
             Principal principal
     ) {
         propertyService
                 .createProperty(
                         new PropertyEntity(
+                                title,
                                 description,
                                 address,
                                 new GeometryFactory().createPoint(new Coordinate(latitude, longitude)),
                                 roomCount,
                                 square,
+                                cost,
                                 userService.findUserByEmail(principal.getName()).orElseThrow(),
                                 List.of()
                         )
@@ -69,13 +72,20 @@ public class PropertyController {
 
     @GetMapping("/get/all/coordinates")
     String getAllPropertiesByCoordinates(
-            @RequestParam float latitude,
-            @RequestParam float longitude,
-            @RequestParam int radius,
-            @RequestParam int page
+            @ModelAttribute PropertyGetAllByCoordinatesInput input,
+            Principal principal,
+            Model model
     ) {
-        List<PropertyEntity> properties = propertyService.getAllPropertiesByCoordinates(latitude, longitude, radius, page);
-        return "pages/property-list-page";
+        Page<PropertyEntity> properties = propertyService.getAllPropertiesByCoordinates(
+                input.getLatitude(),
+                input.getLongitude(),
+                input.getRadius(),
+                input.getPage()-1
+        );
+        model.addAttribute("input", input);
+        model.addAttribute("properties", properties);
+        model.addAttribute("user", userService.findUserByEmail(principal.getName()).orElseThrow());
+        return "pages/property-search-page";
     }
 
     @PostMapping("/delete")

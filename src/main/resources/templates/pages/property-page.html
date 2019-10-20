@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
+
+    <head>
+        <title></title>
+    </head>
+
+    <!-- Start content -->
+    <th:block layout:fragment="content"></th:block>
+    <!-- End content -->
+
+    <!-- BEGIN PAGE VENDOR JS-->
+    <th:block layout:fragment="scripts-page-vendor"></th:block>
+    <!-- END PAGE VENDOR JS -->
+
+    <!-- BEGIN PAGE LEVEL JS-->
+    <th:block layout:fragment="scripts-page"></th:block>
+    <!-- END BEGIN PAGE LEVEL JS-->
+</html>
