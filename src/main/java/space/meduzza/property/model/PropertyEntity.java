@@ -39,12 +39,12 @@ public class PropertyEntity extends BaseEntity  {
     @DecimalMax(value = "9999999.99")
     @NotNull
     @Column(precision = 9, scale = 2, nullable = false)
-    private BigDecimal square = BigDecimal.ZERO;
+    private BigDecimal square;
     @DecimalMin(value = "0")
     @DecimalMax(value = "999999999.99")
     @NotNull
     @Column(precision = 11, scale = 2, nullable = false)
-    private BigDecimal cost = BigDecimal.ZERO;
+    private BigDecimal cost;
     @NotNull
     @ManyToOne()
     @JoinColumn(name = "creator_id", nullable = false)

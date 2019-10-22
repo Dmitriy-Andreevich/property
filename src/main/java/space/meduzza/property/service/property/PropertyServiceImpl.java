@@ -1,5 +1,6 @@
 package space.meduzza.property.service.property;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,16 +16,12 @@ import java.util.Optional;
 
 @Service
 public class PropertyServiceImpl implements PropertyService {
-    private final PropertyRepository propertyRepository;
-    private final MediaService mediaService;
-    private final AuthenticationFacade authenticationFacade;
-
-
-    public PropertyServiceImpl(PropertyRepository propertyRepository, MediaService mediaService, AuthenticationFacade authenticationFacade) {
-        this.propertyRepository = propertyRepository;
-        this.mediaService = mediaService;
-        this.authenticationFacade = authenticationFacade;
-    }
+    @Autowired
+    private PropertyRepository propertyRepository;
+    @Autowired
+    private MediaService mediaService;
+    @Autowired
+    private AuthenticationFacade authenticationFacade;
 
     @Override
     @Transactional

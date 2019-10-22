@@ -1,5 +1,6 @@
 package space.meduzza.property.service.media;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gcp.storage.GoogleStorageResource;
 import org.springframework.context.ApplicationContext;
@@ -27,13 +28,10 @@ public class MediaServiceImpl implements MediaService {
     @Value("${gcs.media-folder-name}")
     private final String FOLDER_NAME = "media";
 
-    private final ApplicationContext applicationContext;
-    private final MediaRepository mediaRepository;
-
-    public MediaServiceImpl(WebApplicationContext applicationContext, MediaRepository mediaRepository) {
-        this.applicationContext = applicationContext;
-        this.mediaRepository = mediaRepository;
-    }
+    @Autowired
+    private ApplicationContext applicationContext;
+    @Autowired
+    private MediaRepository mediaRepository;
 
     @Override
     @Transactional

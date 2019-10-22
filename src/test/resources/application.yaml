@@ -1,0 +1,47 @@
+server:
+  port: 80
+  server:
+    error:
+      whitelabel:
+        enabled: false
+  spring:
+    mvc:
+      throw-exception-if-no-handler-found: true
+    resources:
+      add-mappings: false
+spring:
+  datasource:
+#    url: jdbc:postgresql://meduzza.space:5401/property
+#    username: property
+#    password: property
+  jpa:
+    database-platform: org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  thymeleaf:
+    cache: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  cloud:
+    gcp:
+      credentials:
+        location: file:/Users/user/Documents/PropertyProject-fdd5a6a8300e.json
+facebook:
+  appId: 792113681221989
+  appSecret: c7dd877efabeed5c9f270cd7a8c58eb3
+google:
+  appId: 1078429390453-8skhtj7jjmf5j5rfjhe9jgt1vthf90k6.apps.googleusercontent.com
+  appSecret: 7bjDtPi8PIfN5KzQSoMxAhl8
+github:
+  appId: Iv1.a768b43a53ffebb2
+  appSecret: da1dac97e76ddec9db71b3dd322e382cc49751ec
+
+
+
+
+gcs:
+  bucket-name: "property-bucket-983"
+  media-folder-name: "media/"
