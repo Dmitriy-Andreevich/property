@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import space.meduzza.property.model.PropertyEntity;
 
 @Repository
-public interface PropertyRepository extends JpaRepository<PropertyEntity, Integer> {
-    @Query(value="SELECT * FROM properties WHERE ST_DWithin(cast(properties.coordinates as geography),ST_SetSRID(ST_Point(?2, ?1),4326), ?3) ORDER BY id asc", nativeQuery = true)
-    Page<PropertyEntity> findAllPropertyInRange(double longitude, double latitude, int radius, Pageable pageable);
+public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
+    Page<PropertyEntity> findAllByCreatorId(long creatorId, Pageable pageable);
+    @Query(value="SELECT * FROM properties WHERE ST_DWithin(cast(properties.coordinates as geography),ST_SetSRID(ST_Point(?2, ?1),4326), ?3) ORDER BY ST_Distance(cast(properties.coordinates as geography), ST_Point(?2, ?1))", nativeQuery = true)
+    Page<PropertyEntity> findAllPropertyInRange(BigDecimal longitude, BigDecimal latitude, int radius, Pageable pageable);
 }

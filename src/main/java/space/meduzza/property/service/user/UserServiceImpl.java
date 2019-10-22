@@ -18,15 +18,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByEmail(s).orElseThrow(() -> new UsernameNotFoundException(s));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
         return new User(userEntity.getEmail(), userEntity.getPassword(),
                 Arrays.stream(
                         userEntity
@@ -37,10 +39,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity createUser(String email, String password, String fname, String lname) {
+    public UserEntity createUser(String email, String password) {
         return userRepository.save(
-                new UserEntity(fname, lname, email, passwordEncoder.encode(password), "", List.of())
+                new UserEntity(email, passwordEncoder.encode(password), "ROLE_USER", List.of())
         );
+    }
+
+    @Override
+    public UserEntity createUserIfNotExist(String email) {
+        return findUserByEmail(email).orElseGet(() -> createUser(email, randomPassword()));
     }
 
     @Override
@@ -53,5 +60,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-
+    private String randomPassword(){
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 8).toLowerCase();
+    }
 }

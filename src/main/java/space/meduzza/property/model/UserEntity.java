@@ -1,6 +1,7 @@
 package space.meduzza.property.model;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -13,9 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class UserEntity extends BaseEntity {
-    private String fname;
-    private String lname;
+public class UserEntity extends BaseEntity{
+    @Email
     private String email;
     private String password;
     private String authorities;

@@ -4,21 +4,20 @@
 <!--/*@thymesVar id="properties" type="org.springframework.data.domain.Page<space.meduzza.property.model.PropertyEntity>"*/-->
 <!--/*@thymesVar id="input" type="space.meduzza.property.controller.input.PropertyGetAllByCoordinatesInput"*/-->
 <head>
-    <title>LIST</title>
+    <title>Search Property</title>
 </head>
 
 <!-- Start content -->
 <th:block layout:fragment="content">
-    <section class="home-section section-hero inner-page overlay bg-image"
-             style="background-image: url('/images/hero_1.jpg');"
-             id="home-section">
 
+    <section class="site-section">
         <div class="container">
+
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-12">
                     <div class="mb-5 text-center">
-                        <h1 class="text-white font-weight-bold">Search nearby</h1>
-                        <p>Enter the coordinates and radius of the search</p>
+                        <h1 class="text-dark font-weight-bold">Search nearby</h1>
+                        <p class="text-dark">Enter the coordinates and radius of the search</p>
                     </div>
                     <form method="post" class="search-jobs-form">
                         <div class="row mb-5">
@@ -43,17 +42,11 @@
                     </form>
                 </div>
             </div>
-        </div>
-
-
-    </section>
-
-    <section class="site-section">
-        <div class="container">
 
             <div class="row mb-5 justify-content-center">
                 <div class="col-md-7 text-center">
-                    <h2 class="section-title mb-2" th:text="${properties.getTotalElements()} + ' Properties found'"></h2>
+                    <h2 class="section-title mb-2"
+                        th:text="${properties.getTotalElements()} + ' Properties found'"></h2>
                 </div>
             </div>
 
@@ -88,7 +81,8 @@
 
                 <div class="col-md-6 text-center text-md-left">
                     <div class="custom-pagination ml-auto">
-                        <a th:href="@{/property/get/all/coordinates(latitude=${input.getLatitude()}, longitude=${input.getLongitude()}, radius=${input.getRadius()}, page=${input.getPage()-1})}" class="prev" th:if="${properties.hasPrevious()}">Previous</a>
+                        <a th:href="@{/property/get/all/coordinates(latitude=${input.getLatitude()}, longitude=${input.getLongitude()}, radius=${input.getRadius()}, page=${input.getPage()-1})}"
+                           class="prev" th:if="${properties.hasPrevious()}">Previous</a>
                         <!--/*@thymesVar id="IntStream" type="java.util.stream.IntStream"*/-->
                         <div class="d-inline-block"
                              th:each="pageNumber : ${#numbers.sequence(1, properties.getTotalPages(), 1)}">
@@ -96,7 +90,8 @@
                                th:text="${pageNumber}"
                                th:class="${pageNumber==input.getPage()} ? active"></a>
                         </div>
-                        <a th:href="@{/property/get/all/coordinates(latitude=${input.getLatitude()}, longitude=${input.getLongitude()}, radius=${input.getRadius()}, page=${input.getPage()+1})}" class="next" th:if="${properties.hasNext()}">Next</a>
+                        <a th:href="@{/property/get/all/coordinates(latitude=${input.getLatitude()}, longitude=${input.getLongitude()}, radius=${input.getRadius()}, page=${input.getPage()+1})}"
+                           class="next" th:if="${properties.hasNext()}">Next</a>
                     </div>
                 </div>
             </div>

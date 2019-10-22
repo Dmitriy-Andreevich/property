@@ -24,6 +24,7 @@ public class PropertyEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)
     private UserEntity creator;
+    @NotNull
     @ToString.Exclude
     @OneToMany(mappedBy = "property")
     private List<MediaEntity> medias;

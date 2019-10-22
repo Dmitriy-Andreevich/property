@@ -28,9 +28,8 @@ public class PropertyController {
 
 
     @GetMapping("/create")
-    String createProperty(Principal principal) {
-        System.out.println(principal);
-        return "pages/property-form";
+    public String createProperty() {
+        return "pages/property-form-create";
     }
 
     @PostMapping("/create")

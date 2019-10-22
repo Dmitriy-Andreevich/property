@@ -20,8 +20,10 @@
 
                 <nav class="mx-auto site-navigation">
                     <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-<!--                        <li><a href="#" class="active">Property</a></li>-->
-<!--                        <li class="d-lg-none"><a href="#">Contact Us</a></li>-->
+                        <li><a href="/property/create" th:class="${#request.getServletPath() == '/property/create' ? 'active' : ''}">Create</a></li>
+                        <li><a href="/property/get/all" th:class="${#request.getServletPath() == '/property/get/all' ? 'active' : ''}">All</a></li>
+                        <li><a href="/property/get/my" th:class="${#request.getServletPath() == '/property/get/my' ? 'active' : ''}">My</a></li>
+                        <li><a href="/property/search" th:class="${#request.getServletPath() == '/property/search' ? 'active' : ''}">Search</a></li>
                     </ul>
                 </nav>
 
@@ -39,6 +41,10 @@
             </div>
         </div>
     </header>
+
+    <section class="home-section section-hero inner-page overlay bg-image"
+             style="background-image: url('/images/hero_1.jpg');"
+             id="home-section"></section>
 </div>
 
 
