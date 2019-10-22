@@ -1,20 +1,22 @@
 package space.meduzza.property.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Accessors(chain = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "medias")
 public class MediaEntity extends BaseEntity {
-    private String link;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn
     private PropertyEntity property;
+    @Column(nullable = false)
+    private String name;
 }

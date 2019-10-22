@@ -3,9 +3,16 @@ package space.meduzza.property.service.property;
 import org.springframework.data.domain.Page;
 import space.meduzza.property.model.PropertyEntity;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
 public interface PropertyService {
-    PropertyEntity createProperty(PropertyEntity entity);
-    PropertyEntity getPropertyById(int id);
-    Page<PropertyEntity> getAllPropertiesByCoordinates(float latitude, float longitude, int radius, int page);
-    void deletePropertyById(int id);
+    PropertyEntity createProperty(PropertyEntity inputProperty, List<byte[]> medias);
+    PropertyEntity updateProperty(long id, PropertyEntity entity);
+    Optional<PropertyEntity> findPropertyById(long id);
+    Page<PropertyEntity> findAllUserProperty(int page);
+    Page<PropertyEntity> findAllProperty(int page);
+    Page<PropertyEntity> getAllPropertiesByCoordinates(BigDecimal latitude, BigDecimal longitude, int radius, int page);
+    void deletePropertyById(long id);
 }

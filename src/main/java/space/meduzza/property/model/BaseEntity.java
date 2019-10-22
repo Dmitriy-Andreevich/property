@@ -11,9 +11,8 @@ import java.util.Calendar;
 @NoArgsConstructor
 @MappedSuperclass
 class BaseEntity {
-    @Id
-    @GeneratedValue
-    private int id;
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
     private Timestamp createTime;
     private Timestamp updateTime;
 

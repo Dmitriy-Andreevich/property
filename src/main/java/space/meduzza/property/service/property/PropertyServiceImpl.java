@@ -7,20 +7,51 @@ import org.springframework.stereotype.Service;
 import space.meduzza.property.config.AuthenticationFacade;
 import space.meduzza.property.model.PropertyEntity;
 import space.meduzza.property.repository.PropertyRepository;
+import space.meduzza.property.service.media.MediaService;
+
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PropertyServiceImpl implements PropertyService {
-    @Autowired
-    private PropertyRepository propertyRepository;
+    private final PropertyRepository propertyRepository;
+    private final MediaService mediaService;
+    private final AuthenticationFacade authenticationFacade;
 
-    @Override
-    public PropertyEntity createProperty(PropertyEntity entity) {
-        return propertyRepository.save(entity);
+
+    public PropertyServiceImpl(PropertyRepository propertyRepository, MediaService mediaService, AuthenticationFacade authenticationFacade) {
+        this.propertyRepository = propertyRepository;
+        this.mediaService = mediaService;
+        this.authenticationFacade = authenticationFacade;
     }
 
     @Override
-    public PropertyEntity getPropertyById(int id) {
-        return propertyRepository.findById(id).orElseThrow();
+    @Transactional
+    public PropertyEntity createProperty(PropertyEntity entity, List<byte[]> medias) {
+        PropertyEntity property = propertyRepository.save(entity);
+        mediaService.attachMedia(property, medias);
+        return property;
+    }
+
+    @Override
+    public PropertyEntity updateProperty(long id, PropertyEntity entity) {
+        final PropertyEntity originalEntity = findPropertyById(id).orElseThrow();
+        final PropertyEntity updatedEntity = originalEntity
+                .setTitle(entity.getTitle())
+                .setDescription(entity.getDescription())
+                .setAddress(entity.getAddress())
+                .setCoordinates(entity.getCoordinates())
+                .setRoomCount(entity.getRoomCount())
+                .setSquare(entity.getSquare())
+                .setCost(entity.getCost());
+        return propertyRepository.save(updatedEntity);
+    }
+
+    @Override
+    public Optional<PropertyEntity> findPropertyById(long id) {
+        return propertyRepository.findById(id);
     }
 
     @Override
@@ -39,7 +70,9 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public void deletePropertyById(int id) {
+    @Transactional
+    public void deletePropertyById(long id) {
+        mediaService.deleteAllMediaByProperty(id);
         propertyRepository.deleteById(id);
     }
 }

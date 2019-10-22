@@ -1,18 +1,21 @@
 package space.meduzza.property.controller;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import space.meduzza.property.controller.input.PropertyGetAllByCoordinatesInput;
+import space.meduzza.property.config.AuthenticationFacade;
+import space.meduzza.property.controller.input.CreatePropertyInput;
+import space.meduzza.property.controller.input.PropertyUpdateInput;
+import space.meduzza.property.controller.input.SearchAllPropertiesByCoordinatesInput;
 import space.meduzza.property.model.PropertyEntity;
+import space.meduzza.property.model.UserEntity;
 import space.meduzza.property.service.property.PropertyService;
-import space.meduzza.property.service.user.UserService;
 
-import java.security.Principal;
-import java.util.List;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/property")
@@ -20,12 +23,10 @@ public class PropertyController {
     private final PropertyService propertyService;
     private final AuthenticationFacade authenticationFacade;
 
-    @Autowired
-    public PropertyController(PropertyService propertyService, UserService userService) {
+    public PropertyController(PropertyService propertyService, AuthenticationFacade authenticationFacade) {
         this.propertyService = propertyService;
-        this.userService = userService;
+        this.authenticationFacade = authenticationFacade;
     }
-
 
     @GetMapping("/create")
     public String createProperty() {
@@ -118,10 +119,8 @@ public class PropertyController {
         return "pages/property-search-page";
     }
 
-    @PostMapping("/delete")
-    String deleteProperty(
-            @RequestParam int id
-    ) {
+    @GetMapping("/delete/{id}")
+    public String deleteProperty(@PathVariable long id) {
         propertyService.deletePropertyById(id);
         return "redirect:/";
     }

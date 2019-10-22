@@ -10,8 +10,10 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "users")
 public class UserEntity extends BaseEntity{
@@ -20,6 +22,6 @@ public class UserEntity extends BaseEntity{
     private String password;
     private String authorities;
     @ToString.Exclude
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
     private List<PropertyEntity> properties;
 }
