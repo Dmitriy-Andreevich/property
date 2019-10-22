@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- FIXED TOP-->
+<!--/*@thymesVar id="user" type="space.meduzza.property.model.UserEntity"*/-->
+<div layout:fragment="nav">
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div> <!-- .site-mobile-menu -->
+
+    <header class="site-navbar mt-3">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="site-logo col-6"><a href="/">Property.Example</a></div>
+
+                <nav class="mx-auto site-navigation">
+                    <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
+                        <li><a href="/property/create" th:class="${#request.getServletPath() == '/property/create' ? 'active' : ''}">Create</a></li>
+                        <li><a href="/property/get/all" th:class="${#request.getServletPath() == '/property/get/all' ? 'active' : ''}">All</a></li>
+                        <li><a href="/property/get/my" th:class="${#request.getServletPath() == '/property/get/my' ? 'active' : ''}">My</a></li>
+                        <li><a href="/property/search" th:class="${#request.getServletPath() == '/property/search' ? 'active' : ''}">Search</a></li>
+                    </ul>
+                </nav>
+
+                <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
+                    <div class="ml-auto">
+                        <a href="/logout" class="btn btn-primary border-width-2 d-none d-lg-inline-block">
+                            <span class="m-1">Log Out</span>
+                            <span class="icon-sign-out"></span>
+                        </a>
+                    </div>
+                    <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
+                            class="icon-menu h3 m-0 p-0 mt-2"></span></a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <section class="home-section section-hero inner-page overlay bg-image"
+             style="background-image: url('/images/hero_1.jpg');"
+             id="home-section"></section>
+</div>
+
+
+<!--LEFT FIXED MENU-->
+<div layout:fragment="leftnav">
+
+</div>
+
+<!-- MENU FOR ERROR PAGE-->
+<nav layout:fragment="errornav">
+
+</nav>
+</html>

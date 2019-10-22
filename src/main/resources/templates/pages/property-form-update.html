@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{base}">
+<!--/*@thymesVar id="property" type="space.meduzza.property.model.PropertyEntity"*/-->
+
+    <head>
+        <title>Update Property</title>
+    </head>
+
+    <!-- Start content -->
+    <th:block layout:fragment="content">
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="comment-form-wrap pt-5">
+                        <h3 class="mb-5">Update Property</h3>
+                        <form th:action="'/property/update/'+ ${property.getId()}" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="title">Title *</label>
+                                <input required type="text" class="form-control" id="title" name="title" th:value="${property.getTitle()}">
+                            </div>
+                            <div class="form-group">
+                                <label for="latitude">Latitude *</label>
+                                <input required type="number" step="0.01" class="form-control" id="latitude" name="latitude" th:value="${property.getCoordinates().getX()}">
+                            </div>
+                            <div class="form-group">
+                                <label for="longitude">Longitude *</label>
+                                <input required type="number" step="0.01" class="form-control" id="longitude" name="longitude" th:value="${property.getCoordinates().getY()}">
+                            </div>
+                            <div class="form-group">
+                                <label for="roomCount">Room Count *</label>
+                                <input required type="number" class="form-control" id="roomCount" name="roomCount" th:value="${property.getRoomCount()}">
+                            </div>
+                            <div class="form-group">
+                                <label for="square">Square *</label>
+                                <input required type="number" step="0.01" class="form-control" id="square" name="square" th:value="${property.getSquare()}">
+                            </div>
+                            <div class="form-group">
+                                <label for="cost">Cost *</label>
+                                <input required type="number" step="0.01" class="form-control" id="cost" name="cost" th:value="${property.getCost()}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" name="address" th:value="${property.getAddress()}">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Decription</label>
+                                <textarea name="description" id="description" cols="30" rows="10" class="form-control" th:text="${property.getDescription()}"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Add" class="btn btn-primary btn-md">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </th:block>
+    <!-- End content -->
+
+    <!-- BEGIN PAGE VENDOR JS-->
+    <th:block layout:fragment="scripts-page-vendor"></th:block>
+    <!-- END PAGE VENDOR JS -->
+
+    <!-- BEGIN PAGE LEVEL JS-->
+    <th:block layout:fragment="scripts-page"></th:block>
+    <!-- END BEGIN PAGE LEVEL JS-->
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<!--/*@thymesVar id="property" type="space.meduzza.property.model.PropertyEntity"*/-->
+
+<head>
+    <title>Property</title>
+</head>
+
+<!-- Start content -->
+<th:block layout:fragment="content">
+    <section class="site-section">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-8 mb-4 mb-lg-0">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h2 th:text="${property.getTitle()}"></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <a th:href="'/property/update/'+${property.getId()}" class="btn btn-block btn-primary btn-md"><span
+                                    class="icon-pencil mr-2 text-dark"></span>Edit</a>
+                        </div>
+                        <div class="col-6">
+                            <a th:href="'/property/delete/'+${property.getId()}" class="btn btn-block btn-danger btn-md"><span
+                                    class="icon-delete mr-2 text-dark"></span>Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <th:block th:each="media: ${property.getMedias()}">
+                        <div class="mb-5">
+                            <figure class="mb-5"><img th:src="${'http://storage.googleapis.com/property-bucket-983/media/'+media.getName()}"
+                                                      alt="img"
+                                                      class="img-fluid rounded"></figure>
+                        </div>
+                    </th:block>
+
+
+                </div>
+                <div class="col-lg-4">
+                    <div class="bg-light p-3 border rounded mb-4">
+                        <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Property Summary</h3>
+                        <ul class="list-unstyled pl-3 mb-0">
+                            <li class="mb-2"><strong class="text-black">Published on: </strong><span
+                                    th:text="${property.getCreateTime()}"></span></li>
+                            <li class="mb-2"><strong class="text-black">Publisher: </strong><span
+                                    th:text="${property.getCreator().getEmail()}"></span></li>
+                            <li class="mb-2"><strong class="text-black">Address: </strong><span
+                                    th:text="${property.getAddress()}"></span></li>
+                            <li class="mb-2"><strong class="text-black">Latitude: </strong><span
+                                    th:text="${property.getCoordinates().x}"></span></li>
+                            <li class="mb-2"><strong class="text-black">Longitude: </strong><span
+                                    th:text="${property.getCoordinates().y}"></span></li>
+                            <li class="mb-2"><strong class="text-black">Room Count: </strong><span
+                                    th:text="${property.getRoomCount()}"></span></li>
+                            <li class="mb-2"><strong class="text-black">Square: </strong><span
+                                    th:text="${property.getSquare()}"></span></li>
+                            <li class="mb-2"><strong class="text-black">Cost: </strong><span
+                                    th:text="${property.getCost()}"></span></li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-light p-3 border rounded">
+                        <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Descriprion</h3>
+                        <div class="px-3">
+                            <p th:text="${property.getDescription()}"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+<!-- End content -->
+
+<!-- BEGIN PAGE VENDOR JS-->
+<th:block layout:fragment="scripts-page-vendor"></th:block>
+<!-- END PAGE VENDOR JS -->
+
+<!-- BEGIN PAGE LEVEL JS-->
+<th:block layout:fragment="scripts-page"></th:block>
+<!-- END BEGIN PAGE LEVEL JS-->
+</html>
