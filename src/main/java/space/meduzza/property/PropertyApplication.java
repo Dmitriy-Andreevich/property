@@ -6,9 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import space.meduzza.property.service.user.UserService;
 
 @SpringBootApplication
-public class PropertyApplication implements CommandLineRunner {
-    @Autowired
-    private UserService userService;
+public class PropertyApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PropertyApplication.class, args);

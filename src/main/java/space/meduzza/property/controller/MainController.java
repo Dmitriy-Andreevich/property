@@ -4,11 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
+public class MainController {
 
-    @RequestMapping("/get")
-    String getUser(){
-        return "pages/user-page";
+    @RequestMapping()
+    public String main(){
+        return "redirect:/property/get/all";
     }
 }

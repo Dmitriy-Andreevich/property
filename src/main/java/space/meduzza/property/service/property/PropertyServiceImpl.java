@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import space.meduzza.property.config.AuthenticationFacade;
 import space.meduzza.property.model.PropertyEntity;
 import space.meduzza.property.repository.PropertyRepository;
 
@@ -20,6 +21,16 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public PropertyEntity getPropertyById(int id) {
         return propertyRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Page<PropertyEntity> findAllUserProperty(int page){
+        return propertyRepository.findAllByCreatorId(authenticationFacade.findCurrentUser().getId(), PageRequest.of(page, 10));
+    }
+
+    @Override
+    public Page<PropertyEntity> findAllProperty(int page){
+        return propertyRepository.findAll(PageRequest.of(page, 10));
     }
 
     @Override

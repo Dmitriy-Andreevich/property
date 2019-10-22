@@ -2,9 +2,9 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{base}">
 <!--/*@thymesVar id="properties" type="org.springframework.data.domain.Page<space.meduzza.property.model.PropertyEntity>"*/-->
-<!--/*@thymesVar id="input" type="space.meduzza.property.controller.input.SearchAllPropertiesByCoordinatesInput"*/-->
+<!--/*@thymesVar id="page" type="java.lang.Integer"*/-->
 <head>
-    <title>Search Property</title>
+    <title>My Properties</title>
 </head>
 
 <!-- Start content -->
@@ -13,36 +13,6 @@
     <section class="site-section">
         <div class="container">
 
-            <div class="row align-items-center justify-content-center">
-                <div class="col-md-12">
-                    <div class="mb-5 text-center">
-                        <h1 class="text-dark font-weight-bold">Search nearby</h1>
-                        <p class="text-dark">Enter the coordinates and radius of the search</p>
-                    </div>
-                    <form method="post" class="search-jobs-form">
-                        <div class="row mb-5">
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <input type="number" class="form-control form-control-lg"
-                                       placeholder="Latitude">
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <input type="number" class="form-control form-control-lg"
-                                       placeholder="Longitude">
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <input type="number" class="form-control form-control-lg"
-                                       placeholder="Radius in meters">
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <button type="submit" class="btn btn-primary btn-lg btn-block text-white btn-search">
-                                    <span class="icon-search icon mr-2"></span>Search Property
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
             <div class="row mb-5 justify-content-center">
                 <div class="col-md-7 text-center">
                     <h2 class="section-title mb-2"
@@ -50,19 +20,16 @@
                 </div>
             </div>
 
-
             <div class="mb-5">
-
                 <!--/*@thymesVar id="property" type="space.meduzza.property.model.PropertyEntity"*/-->
-                <div th:each="property: ${properties.getContent()}"
-                     class="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
+                <div th:each="property: ${properties.getContent()}" class="row align-items-start job-item border-bottom pb-3 mb-3 pt-3">
                     <div class="col-md-2">
                         <a href="#"><img src="/images/featured-listing-2.jpg" alt="Image"
                                          class="img-fluid"></a>
                     </div>
                     <div class="col-md-4">
                         <span class="badge badge-primary px-2 py-1 mb-3">Property</span>
-                        <h2><a th:text="${property.getTitle()}" href="#">TITLE</a></h2>
+                        <h2><a th:text="${property.getTitle()}" th:href="'/property/get/'+${property.getId()}"></a></h2>
                         <p class="meta">Publisher: <strong th:text="${property.creator.getEmail()}"></strong> Rooms:
                             <strong th:text="${property.getRoomCount()}"></strong></p>
                     </div>
@@ -81,16 +48,16 @@
 
                 <div class="col-md-6 text-center text-md-left">
                     <div class="custom-pagination ml-auto">
-                        <a th:href="@{/property/get/all/coordinates(latitude=${input.getLatitude()}, longitude=${input.getLongitude()}, radius=${input.getRadius()}, page=${input.getPage()-1})}"
+                        <a  th:href="@{/property/get/my(page=${page-1})}"
                            class="prev" th:if="${properties.hasPrevious()}">Previous</a>
                         <!--/*@thymesVar id="IntStream" type="java.util.stream.IntStream"*/-->
                         <div class="d-inline-block"
                              th:each="pageNumber : ${#numbers.sequence(1, properties.getTotalPages(), 1)}">
-                            <a th:href="@{/property/get/all/coordinates(latitude=${input.getLatitude()}, longitude=${input.getLongitude()}, radius=${input.getRadius()}, page=${pageNumber})}"
+                            <a th:href="@{/property/get/my(page=${pageNumber})}"
                                th:text="${pageNumber}"
-                               th:class="${pageNumber==input.getPage()} ? active"></a>
+                               th:class="${pageNumber==page} ? active"></a>
                         </div>
-                        <a th:href="@{/property/get/all/coordinates(latitude=${input.getLatitude()}, longitude=${input.getLongitude()}, radius=${input.getRadius()}, page=${input.getPage()+1})}"
+                        <a th:href="@{/property/get/my(page=${page+1})}"
                            class="next" th:if="${properties.hasNext()}">Next</a>
                     </div>
                 </div>

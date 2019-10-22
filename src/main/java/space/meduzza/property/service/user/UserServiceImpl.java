@@ -1,8 +1,5 @@
 package space.meduzza.property.service.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,10 +8,9 @@ import org.springframework.stereotype.Service;
 import space.meduzza.property.model.UserEntity;
 import space.meduzza.property.repository.UserRepository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,11 +26,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
         return new User(userEntity.getEmail(), userEntity.getPassword(),
-                Arrays.stream(
-                        userEntity
-                                .getAuthorities()
-                                .split(",")
-                ).map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+                UserService.getAuthorities(userEntity)
         );
     }
 

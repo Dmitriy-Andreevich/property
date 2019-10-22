@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/property")
 public class PropertyController {
     private final PropertyService propertyService;
-    private final UserService userService;
+    private final AuthenticationFacade authenticationFacade;
 
     @Autowired
     public PropertyController(PropertyService propertyService, UserService userService) {
@@ -33,57 +33,88 @@ public class PropertyController {
     }
 
     @PostMapping("/create")
-    String createProperty(
-            @RequestParam String title,
-            @RequestParam String description,
-            @RequestParam String address,
-            @RequestParam Float latitude,
-            @RequestParam Float longitude,
-            @RequestParam int roomCount,
-            @RequestParam float square,
-            @RequestParam float cost,
-            Principal principal
-    ) {
-        propertyService
+    public String createProperty(@ModelAttribute @Valid CreatePropertyInput createPropertyInput) {
+        final PropertyEntity property = propertyService
                 .createProperty(
-                        new PropertyEntity(
-                                title,
-                                description,
-                                address,
-                                new GeometryFactory().createPoint(new Coordinate(latitude, longitude)),
-                                roomCount,
-                                square,
-                                cost,
-                                userService.findUserByEmail(principal.getName()).orElseThrow(),
-                                List.of()
-                        )
+                        createPropertyInput.toPropertyEntity(authenticationFacade.findCurrentUser()),
+                        createPropertyInput.getMedias()
+                                .stream()
+                                .filter(e -> e.getSize() > 0)
+                                .map(el -> {
+                                    try {
+                                        return el.getBytes();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    throw new RuntimeException();
+                                }).collect(Collectors.toList())
                 );
-        return "redirect:/";
+        return "redirect:/property/get/" + property.getId();
     }
 
-    @GetMapping("/get")
-    String getProperty(
-            @RequestParam int id
+    @GetMapping("/update/{id}")
+    public String updateProperty(
+            @PathVariable long id,
+            Model model
     ) {
-        propertyService.getPropertyById(id);
+        final PropertyEntity property = propertyService.findPropertyById(id).orElseThrow();
+        final UserEntity user = authenticationFacade.findCurrentUser();
+        if (property.getCreator().getId() != user.getId()) throw new AccessDeniedException("Error");
+        model.addAttribute("property", property);
+        return "pages/property-form-update";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateProperty(
+            @PathVariable long id,
+            @ModelAttribute @Valid PropertyUpdateInput propertyUpdateInput
+    ) {
+        final PropertyEntity property = propertyService.updateProperty(id, propertyUpdateInput.toPropertyEntity(authenticationFacade.findCurrentUser()));
+        return "redirect:/property/get/" + property.getId();
+    }
+
+    @GetMapping("/get/{id}")
+    public String getProperty(
+            @PathVariable long id,
+            Model model
+    ) {
+        model.addAttribute("property", propertyService.findPropertyById(id).orElseThrow());
         return "pages/property-page";
     }
 
-    @GetMapping("/get/all/coordinates")
-    String getAllPropertiesByCoordinates(
-            @ModelAttribute PropertyGetAllByCoordinatesInput input,
-            Principal principal,
+    @GetMapping("/get/all")
+    public String getProperty(
+            @RequestParam(required = false, defaultValue = "1") int page,
+            Model model
+    ) {
+        model.addAttribute("page", page);
+        model.addAttribute("properties", propertyService.findAllProperty(page - 1));
+        return "pages/property-all-page";
+    }
+
+    @GetMapping("/get/my")
+    public String getMyProperty(
+            @RequestParam(required = false, defaultValue = "1") int page,
+            Model model
+    ) {
+        model.addAttribute("page", page);
+        model.addAttribute("properties", propertyService.findAllUserProperty(page - 1));
+        return "pages/property-my-page";
+    }
+
+    @GetMapping("/search")
+    public String searchAllPropertiesByCoordinates(
+            @ModelAttribute @Valid SearchAllPropertiesByCoordinatesInput input,
             Model model
     ) {
         Page<PropertyEntity> properties = propertyService.getAllPropertiesByCoordinates(
                 input.getLatitude(),
                 input.getLongitude(),
                 input.getRadius(),
-                input.getPage()-1
+                input.getPage() - 1
         );
         model.addAttribute("input", input);
         model.addAttribute("properties", properties);
-        model.addAttribute("user", userService.findUserByEmail(principal.getName()).orElseThrow());
         return "pages/property-search-page";
     }
 
