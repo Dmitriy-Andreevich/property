@@ -108,7 +108,7 @@ public class PropertyController {
             @ModelAttribute @Valid SearchAllPropertiesByCoordinatesInput input,
             Model model
     ) {
-        Page<PropertyEntity> properties = propertyService.getAllPropertiesByCoordinates(
+        final Page<PropertyEntity> properties = propertyService.getAllPropertiesByCoordinates(
                 input.getLatitude(),
                 input.getLongitude(),
                 input.getRadius(),

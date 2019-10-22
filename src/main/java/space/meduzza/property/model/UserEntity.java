@@ -3,9 +3,8 @@ package space.meduzza.property.model;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -19,7 +18,9 @@ import java.util.List;
 public class UserEntity extends BaseEntity{
     @Email
     private String email;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String authorities;
     @ToString.Exclude
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)

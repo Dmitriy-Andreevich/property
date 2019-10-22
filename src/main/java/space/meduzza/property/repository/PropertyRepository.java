@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import space.meduzza.property.model.PropertyEntity;
 
+import java.math.BigDecimal;
+
 @Repository
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
     Page<PropertyEntity> findAllByCreatorId(long creatorId, Pageable pageable);

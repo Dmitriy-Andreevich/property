@@ -1,6 +1,5 @@
 package space.meduzza.property.service.property;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -65,7 +64,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Page<PropertyEntity> getAllPropertiesByCoordinates(float latitude, float longitude, int radius, int page) {
+    public Page<PropertyEntity> getAllPropertiesByCoordinates(BigDecimal latitude, BigDecimal longitude, int radius, int page) {
         return propertyRepository.findAllPropertyInRange(longitude, latitude, radius, PageRequest.of(page, 5));
     }
 
