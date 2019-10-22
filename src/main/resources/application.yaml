@@ -28,9 +28,9 @@ spring:
   cloud:
     gcp:
       credentials:
-        location: [PRIVATE]
+        location: 0
 facebook:
-  appId: PRIVATE
+  appId: [PRIVATE]
   appSecret: [PRIVATE]
 google:
   appId: [PRIVATE]
@@ -38,10 +38,6 @@ google:
 github:
   appId: [PRIVATE]
   appSecret: [PRIVATE]
-
-
-
-
 gcs:
   bucket-name: [PRIVATE]
   media-folder-name: [PRIVATE]
