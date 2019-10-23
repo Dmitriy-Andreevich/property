@@ -7,12 +7,13 @@ Technologies used:
     - **[Security](https://spring.io/projects/spring-security)**
     - **[Social](https://projects.spring.io/spring-social)**
 - **[Thymeleaf](https://www.thymeleaf.org/)**
-- **[Google Cloud](https://cloud.google.com/)**
+- **[Google Cloud Platform](https://cloud.google.com/)**
     - **[Storage](https://cloud.google.com/storage/)**
 - **[PostgreSQL](https://www.postgresql.org/)**
     - **[Postgis](https://postgis.net/)**
+    
 ---
-##Video with use case example project**
+##Video with use case example project
 #### Main proccess
 > https://www.loom.com/share/3af4b012a1034c35b558b16ebf2e3f7b
 
