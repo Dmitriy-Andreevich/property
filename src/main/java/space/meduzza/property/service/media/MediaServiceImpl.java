@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gcp.storage.GoogleStorageResource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.WritableResource;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
+import space.meduzza.property.config.AuthenticationFacade;
+import space.meduzza.property.config.AuthenticationFacadeImpl;
 import space.meduzza.property.model.MediaEntity;
 import space.meduzza.property.model.PropertyEntity;
 import space.meduzza.property.repository.MediaRepository;
@@ -32,6 +35,9 @@ public class MediaServiceImpl implements MediaService {
     private ApplicationContext applicationContext;
     @Autowired
     private MediaRepository mediaRepository;
+    @Autowired
+    private AuthenticationFacade authenticationFacade;
+
 
     @Override
     @Transactional
@@ -64,14 +70,28 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public void deleteMediaByPropertyId(long propertyId) {
-        mediaRepository.deleteAllByPropertyId(propertyId);
+    @Transactional
+    public void deleteMediaByPropertyId(long mediaId) {
+        final MediaEntity mediaEntities = mediaRepository.findById(mediaId).orElseThrow();
+        final long resourceOwnerId = mediaEntities.getProperty().getCreator().getId();
+        authenticationFacade.isOwnerResourceWithException(resourceOwnerId);
+        mediaRepository.delete(mediaEntities);
+        try {
+            ((GoogleStorageResource) applicationContext.getResource(getMediaLink(mediaEntities.getName()))).getBlob().delete();
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     @Transactional
     public void deleteAllMediaByProperty(long propertyId) {
         final List<MediaEntity> mediaEntities = mediaRepository.findAllByPropertyId(propertyId);
+        if(mediaEntities.isEmpty())
+            return;
+        final long resourceOwnerId = mediaEntities.get(0).getProperty().getCreator().getId();
+        authenticationFacade.isOwnerResourceWithException(resourceOwnerId);
+        mediaRepository.deleteAllByPropertyId(propertyId);
         mediaEntities.forEach((el -> {
             try {
                 ((GoogleStorageResource) applicationContext.getResource(getMediaLink(el.getName()))).getBlob().delete();
@@ -79,7 +99,6 @@ public class MediaServiceImpl implements MediaService {
                 e.printStackTrace();
             }
         }));
-        mediaRepository.deleteAllByPropertyId(propertyId);
     }
 
     @Override
