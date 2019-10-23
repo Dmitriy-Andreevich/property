@@ -51,6 +51,13 @@ class PropertyServiceImplTest {
 
     @BeforeEach
     public void setup() {
+        final UserEntity userEntity = new UserEntity()
+                .toBuilder()
+                .email("test@email.com")
+                .authorities("ROLE_USER")
+                .password("test")
+                .build();
+
         property = PropertyEntity.builder()
                 .title("test")
                 .address("test")
@@ -58,15 +65,11 @@ class PropertyServiceImplTest {
                 .description("test")
                 .cost(BigDecimal.ONE)
                 .roomCount(5)
+                .creator(userEntity)
                 .square(BigDecimal.ONE)
                 .build();
 
-        when(authenticationFacade.findCurrentUser()).thenReturn(new UserEntity()
-                .toBuilder()
-                .email("test@email.com")
-                .authorities("ROLE_USER")
-                .password("test")
-                .build());
+        when(authenticationFacade.findCurrentUser()).thenReturn(userEntity);
     }
 
     @Test
@@ -119,8 +122,8 @@ class PropertyServiceImplTest {
 
     @Test
     void deletePropertyById() {
+        when(propertyRepository.findById(any())).thenReturn(Optional.of(property));
         propertyService.deletePropertyById(0);
-//        verify(mediaService).deleteAllMediaByProperty(any());
         verify(propertyRepository).deleteById(any());
     }
 }

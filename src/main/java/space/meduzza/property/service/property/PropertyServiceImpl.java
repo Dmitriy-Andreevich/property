@@ -34,6 +34,8 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public PropertyEntity updateProperty(long id, PropertyEntity entity) {
         final PropertyEntity originalEntity = findPropertyById(id).orElseThrow();
+        final long resourceOwnerId = originalEntity.getCreator().getId();
+        authenticationFacade.isOwnerResourceWithException(resourceOwnerId);
         final PropertyEntity updatedEntity = originalEntity
                 .setTitle(entity.getTitle())
                 .setDescription(entity.getDescription())
@@ -68,6 +70,11 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     @Transactional
     public void deletePropertyById(long id) {
+        final Optional<PropertyEntity> propertyEntity = findPropertyById(id);
+        if(propertyEntity.isEmpty())
+            return;
+        final long resourceOwnerId = propertyEntity.get().getCreator().getId();
+        authenticationFacade.isOwnerResourceWithException(resourceOwnerId);
         mediaService.deleteAllMediaByProperty(id);
         propertyRepository.deleteById(id);
     }
