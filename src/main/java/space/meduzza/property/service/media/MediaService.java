@@ -9,7 +9,7 @@ public interface MediaService {
     List<MediaEntity> attachMedia(PropertyEntity property, List<byte[]> medias);
     List<MediaEntity> getAllMediaByProperty(long propertyId);
     List<String> getAllMediaLinksByProperty(long propertyId);
-    void deleteMediaByPropertyId(long propertyId);
+    void deleteMediaById(long propertyId);
     void deleteAllMediaByProperty(long propertyId);
     String getMediaLink(String name);
 }
