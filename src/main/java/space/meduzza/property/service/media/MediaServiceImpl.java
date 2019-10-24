@@ -71,8 +71,8 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     @Transactional
-    public void deleteMediaByPropertyId(long mediaId) {
-        final MediaEntity mediaEntities = mediaRepository.findById(mediaId).orElseThrow();
+    public void deleteMediaById(long id) {
+        final MediaEntity mediaEntities = mediaRepository.findById(id).orElseThrow();
         final long resourceOwnerId = mediaEntities.getProperty().getCreator().getId();
         authenticationFacade.isOwnerResourceWithException(resourceOwnerId);
         mediaRepository.delete(mediaEntities);
