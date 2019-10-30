@@ -2,7 +2,6 @@ package space.meduzza.property.model;
 
 import lombok.*;
 import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -18,6 +17,7 @@ import java.util.List;
 @Table(name = "users")
 public class UserEntity extends BaseEntity{
     @Email
+    @Column(unique = true)
     private String email;
     @Column(nullable = false)
     private String password;

@@ -33,7 +33,7 @@ public class PropertyEntity extends BaseEntity  {
     @Column(nullable = false)
     @NotNull
     private Point coordinates;
-    @Min(1)
+    @Min(0)
     private int roomCount;
     @DecimalMin(value = "0")
     @DecimalMax(value = "9999999.99")
@@ -46,7 +46,7 @@ public class PropertyEntity extends BaseEntity  {
     @Column(precision = 11, scale = 2, nullable = false)
     private BigDecimal cost;
     @NotNull
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)
     private UserEntity creator;
     @NotNull
