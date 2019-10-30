@@ -65,7 +65,7 @@ class UserServiceImplTest {
 
     @Test
     void createUser() {
-        when(userRepository.save(Mockito.any(UserEntity.class))).then(e->e.getArgument(0));
+        when(userRepository.save(any(UserEntity.class))).then(e->e.getArgument(0));
         UserEntity test = userServiceImpl.createUser(user.getEmail(), "test");
         assertThat(test).isNotNull();
     }

@@ -35,8 +35,7 @@ class UserRepositoryTest {
 
     @Test
     void findByEmail() {
-        entityManager.persist(user);
-        entityManager.flush();
+        entityManager.persistAndFlush(user);
 
         UserEntity found = userRepository.findByEmail(user.getEmail()).get();
         assertThat(found.getPassword())

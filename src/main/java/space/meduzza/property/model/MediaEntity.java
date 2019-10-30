@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -14,9 +15,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "medias")
 public class MediaEntity extends BaseEntity {
-    @ManyToOne()
+    @NotNull
+    @ManyToOne
     @JoinColumn
     private PropertyEntity property;
+    @NotNull
     @Column(nullable = false)
     private String name;
 }
