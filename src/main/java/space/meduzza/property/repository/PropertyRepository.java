@@ -11,7 +11,17 @@ import java.math.BigDecimal;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
-    Page<PropertyEntity> findAllByCreatorId(long creatorId, Pageable pageable);
-    @Query(value="SELECT * FROM properties WHERE ST_DWithin(cast(properties.coordinates as geography),ST_SetSRID(ST_Point(?2, ?1),4326), ?3) ORDER BY ST_Distance(cast(properties.coordinates as geography), ST_Point(?2, ?1))", nativeQuery = true)
-    Page<PropertyEntity> findAllPropertyInRange(BigDecimal longitude, BigDecimal latitude, int radius, Pageable pageable);
+    Page<PropertyEntity> findAllByCreatorId(
+            long creatorId,
+            Pageable pageable
+    );
+
+    @Query(value = "SELECT * FROM properties WHERE ST_DWithin(cast(properties.coordinates as geography),ST_SetSRID(ST_Point(?2, ?1),4326), ?3) ORDER BY ST_Distance(cast(properties.coordinates as geography), ST_Point(?2, ?1))",
+           nativeQuery = true)
+    Page<PropertyEntity> findAllPropertyInRange(
+            final BigDecimal longitude,
+            final BigDecimal latitude,
+            final int radius,
+            final Pageable pageable
+    );
 }

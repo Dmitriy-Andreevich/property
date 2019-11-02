@@ -19,6 +19,7 @@ public class MediaEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn
     private PropertyEntity property;
+
     @NotNull
     @Column(nullable = false)
     private String name;

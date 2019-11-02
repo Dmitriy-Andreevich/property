@@ -8,10 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import space.meduzza.property.model.PropertyEntity;
 import space.meduzza.property.model.UserEntity;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -19,38 +16,46 @@ import java.util.List;
 @AllArgsConstructor
 public class CreatePropertyInput {
     @Size(min = 3, max = 100)
-    String title;
+    private String title;
+
     @Size(max = 10000)
-    String description;
+    private String description;
+
     @Size(max = 100)
-    String address;
+    private String address;
+
     @DecimalMin("-90")
     @DecimalMax("90")
-    BigDecimal latitude;
+    private BigDecimal latitude;
+
     @DecimalMin("-180")
     @DecimalMax("180")
-    BigDecimal longitude;
+    private BigDecimal longitude;
+
     @Min(1)
-    int roomCount;
+    private int roomCount;
+
     @DecimalMin(value = "0")
     @DecimalMax(value = "9999999.99")
-    BigDecimal square;
+    private BigDecimal square;
+
     @DecimalMin(value = "0")
     @DecimalMax(value = "999999999.99")
-    BigDecimal cost;
-    List<MultipartFile> medias;
+    private BigDecimal cost;
 
-    public PropertyEntity toPropertyEntity(UserEntity userEntity) {
-        return new PropertyEntity(
-                title,
-                description,
-                address,
-                new GeometryFactory().createPoint(new Coordinate(latitude.doubleValue(), longitude.doubleValue())),
-                roomCount,
-                square,
-                cost,
-                userEntity,
-                List.of()
-        );
+    @NotNull
+    private List<MultipartFile> medias;
+
+    public PropertyEntity toPropertyEntity(final UserEntity userEntity) {
+        return new PropertyEntity(title,
+                                  description,
+                                  address,
+                                  new GeometryFactory().createPoint(new Coordinate(latitude.doubleValue(),
+                                                                                   longitude.doubleValue())),
+                                  roomCount,
+                                  square,
+                                  cost,
+                                  userEntity,
+                                  List.of());
     }
 }

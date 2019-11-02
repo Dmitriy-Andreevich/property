@@ -89,8 +89,8 @@
         if (typeof options !== 'object' || options === null)
             options = {};
 
-        //allow setting options with data attributes
-        //data-api options will be overwritten with custom javascript options
+        //allow setting options with content attributes
+        //content-api options will be overwritten with custom javascript options
         options = $.extend(this.element.data(), options);
 
         //html template for the picker UI
@@ -346,10 +346,10 @@
 
             var list = '<ul>';
             for (range in this.ranges) {
-                list += '<li data-range-key="' + range + '">' + range + '</li>';
+                list += '<li content-range-key="' + range + '">' + range + '</li>';
             }
             if (this.showCustomRangeLabel) {
-                list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
+                list += '<li content-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
             }
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
@@ -846,7 +846,7 @@
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" content-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
 
                 }
                 html += '</tr>';
@@ -1108,7 +1108,7 @@
               // also support mobile devices
               .on('touchend.daterangepicker', this._outsideClickProxy)
               // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-              .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy)
+              .on('click.daterangepicker', '[content-toggle=dropdown]', this._outsideClickProxy)
               // and also close when focus changes to outside the picker (eg. tabbing between controls)
               .on('focusin.daterangepicker', this._outsideClickProxy);
 
@@ -1189,7 +1189,7 @@
             if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
                 return;
 
-            var label = e.target.getAttribute('data-range-key');
+            var label = e.target.getAttribute('content-range-key');
 
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
@@ -1202,7 +1202,7 @@
         },
 
         clickRange: function(e) {
-            var label = e.target.getAttribute('data-range-key');
+            var label = e.target.getAttribute('content-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
@@ -1256,7 +1256,7 @@
             if (!$(e.target).hasClass('available')) return;
 
             //have the text inputs above calendars reflect the date being hovered over
-            var title = $(e.target).attr('data-title');
+            var title = $(e.target).attr('content-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
@@ -1278,7 +1278,7 @@
                     //skip week numbers, only look at dates
                     if ($(el).hasClass('week')) return;
 
-                    var title = $(el).attr('data-title');
+                    var title = $(el).attr('content-title');
                     var row = title.substr(1, 1);
                     var col = title.substr(3, 1);
                     var cal = $(el).parents('.calendar');
@@ -1299,7 +1299,7 @@
 
             if (!$(e.target).hasClass('available')) return;
 
-            var title = $(e.target).attr('data-title');
+            var title = $(e.target).attr('content-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');

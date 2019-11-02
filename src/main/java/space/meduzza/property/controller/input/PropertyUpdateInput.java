@@ -18,37 +18,43 @@ import java.util.List;
 @AllArgsConstructor
 public class PropertyUpdateInput {
     @Size(min = 3, max = 100)
-    String title;
+    private String title;
+
     @Size(max = 10000)
-    String description;
+    private String description;
+
     @Size(max = 100)
-    String address;
+    private String address;
+
     @DecimalMin("-90")
     @DecimalMax("90")
-    BigDecimal latitude;
+    private BigDecimal latitude;
+
     @DecimalMin("-180")
     @DecimalMax("180")
-    BigDecimal longitude;
+    private BigDecimal longitude;
+
     @Min(1)
-    int roomCount;
+    private int roomCount;
+
     @DecimalMin(value = "0")
     @DecimalMax(value = "9999999.99")
-    BigDecimal square;
+    private BigDecimal square;
+
     @DecimalMin(value = "0")
     @DecimalMax(value = "999999999.99")
-    BigDecimal cost;
+    private BigDecimal cost;
 
-    public PropertyEntity toPropertyEntity(UserEntity userEntity){
-        return new PropertyEntity(
-                title,
-                description,
-                address,
-                new GeometryFactory().createPoint(new Coordinate(latitude.doubleValue(), longitude.doubleValue())),
-                roomCount,
-                square,
-                cost,
-                userEntity,
-                List.of()
-        );
+    public PropertyEntity toPropertyEntity(UserEntity userEntity) {
+        return new PropertyEntity(title,
+                                  description,
+                                  address,
+                                  new GeometryFactory().createPoint(new Coordinate(latitude.doubleValue(),
+                                                                                   longitude.doubleValue())),
+                                  roomCount,
+                                  square,
+                                  cost,
+                                  userEntity,
+                                  List.of());
     }
 }

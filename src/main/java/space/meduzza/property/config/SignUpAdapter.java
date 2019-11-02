@@ -17,25 +17,35 @@ import java.util.Map;
 public class SignUpAdapter implements ConnectionSignUp {
     private final UserService userService;
 
-    public SignUpAdapter(UserService userService) {
+    public SignUpAdapter(final UserService userService) {
         this.userService = userService;
     }
 
-    public String execute(Connection<?> connection){
+    public String execute(final Connection<?> connection) {
         UserEntity userEntity;
-        switch (connection.getKey().getProviderId()){
+        switch (connection
+                .getKey()
+                .getProviderId()) {
             case "facebook":
-                User user = ((Facebook)connection.getApi()).fetchObject("me", User.class, "id", "email", "first_name", "last_name");
+                User user = ((Facebook) connection.getApi()).fetchObject("me",
+                                                                         User.class,
+                                                                         "id",
+                                                                         "email",
+                                                                         "first_name",
+                                                                         "last_name");
                 userEntity = userService.createUserIfNotExist(user.getEmail());
                 break;
             case "github":
-                String emaill = ((Map<String, String>) ((GitHub) connection.getApi()).restOperations().getForObject("https://api.github.com/user/emails", List.class).get(0)).get("email");
+                String emaill = ((Map<String, String>) ((GitHub) connection.getApi())
+                        .restOperations()
+                        .getForObject("https://api.github.com/user/emails", List.class)
+                        .get(0)).get("email");
                 userEntity = userService.createUserIfNotExist(emaill);
                 break;
             default:
                 UserProfile profile = connection.fetchUserProfile();
                 userEntity = userService.createUserIfNotExist(profile.getEmail());
-            }
+        }
 
         return String.valueOf(userEntity.getId());
     }

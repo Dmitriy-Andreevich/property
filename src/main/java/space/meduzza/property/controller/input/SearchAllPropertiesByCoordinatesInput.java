@@ -12,13 +12,16 @@ import java.math.BigDecimal;
 public class SearchAllPropertiesByCoordinatesInput {
     @DecimalMin("-90")
     @DecimalMax("90")
-    BigDecimal latitude;
+    private BigDecimal latitude;
+
     @DecimalMin("-180")
     @DecimalMax("180")
-    BigDecimal longitude;
+    private BigDecimal longitude;
+
     @Min(1)
     @Max(100_000)
-    int radius = 1;
+    private int radius = 1;
+
     @Min(1)
-    int page = 1;
+    private int page = 1;
 }

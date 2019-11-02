@@ -3066,7 +3066,7 @@ S2.define('select2/data/select',[
 
     data.selected = true;
 
-    // If data.element is a DOM node, use it instead
+    // If content.element is a DOM node, use it instead
     if ($(data.element).is('option')) {
       data.element.selected = true;
 
@@ -3152,7 +3152,7 @@ S2.define('select2/data/select',[
   SelectAdapter.prototype.destroy = function () {
     // Remove anything added to child elements
     this.$element.find('*').each(function () {
-      // Remove any custom data set by Select2
+      // Remove any custom content set by Select2
       $.removeData(this, 'data');
     });
   };
@@ -3225,7 +3225,7 @@ S2.define('select2/data/select',[
     var normalizedData = this._normalizeItem(data);
     normalizedData.element = option;
 
-    // Override the option's data with the combined data
+    // Override the option's content with the combined content
     $.data(option, 'data', normalizedData);
 
     return $option;
@@ -3367,7 +3367,7 @@ S2.define('select2/data/array',[
     for (var d = 0; d < data.length; d++) {
       var item = this._normalizeItem(data[d]);
 
-      // Skip items which were pre-loaded, only merge the data
+      // Skip items which were pre-loaded, only merge the content
       if ($.inArray(item.id, existingIds) >= 0) {
         var $existingOption = $existing.filter(onlyItem(item));
 
@@ -3588,7 +3588,7 @@ S2.define('select2/data/tags',[
 
       if (tag != null) {
         var $option = self.option(tag);
-        $option.attr('data-select2-tag', true);
+        $option.attr('content-select2-tag', true);
 
         self.addOptions([$option]);
 
@@ -3623,7 +3623,7 @@ S2.define('select2/data/tags',[
   Tags.prototype._removeOldTags = function (_) {
     var tag = this._lastTag;
 
-    var $options = this.$element.find('option[data-select2-tag]');
+    var $options = this.$element.find('option[content-select2-tag]');
 
     $options.each(function () {
       if (this.selected) {
@@ -3661,10 +3661,10 @@ S2.define('select2/data/tokenizer',[
     var self = this;
 
     function createAndSelect (data) {
-      // Normalize the data object so we can use it for checks
+      // Normalize the content object so we can use it for checks
       var item = self._normalizeItem(data);
 
-      // Check if the data object already exists as a tag
+      // Check if the content object already exists as a tag
       // Select it if it doesn't
       var $existingOptions = self.$element.find('option').filter(function () {
         return $(this).val() === item.id;
@@ -3673,7 +3673,7 @@ S2.define('select2/data/tokenizer',[
       // If an existing option wasn't found for it, create the option
       if (!$existingOptions.length) {
         var $option = self.option(item);
-        $option.attr('data-select2-tag', true);
+        $option.attr('content-select2-tag', true);
 
         self._removeOldTags();
         self.addOptions([$option]);
@@ -4538,14 +4538,14 @@ S2.define('select2/defaults',[
   './translation',
   './diacritics',
 
-  './data/select',
-  './data/array',
-  './data/ajax',
-  './data/tags',
-  './data/tokenizer',
-  './data/minimumInputLength',
-  './data/maximumInputLength',
-  './data/maximumSelectionLength',
+  './content/select',
+  './content/array',
+  './content/ajax',
+  './content/tags',
+  './content/tokenizer',
+  './content/minimumInputLength',
+  './content/maximumInputLength',
+  './content/maximumSelectionLength',
 
   './dropdown',
   './dropdown/search',
@@ -4837,7 +4837,7 @@ S2.define('select2/defaults',[
 
       // Do a recursive check for options with children
       if (data.children && data.children.length > 0) {
-        // Clone the data object if there are children
+        // Clone the content object if there are children
         // This is required as we modify the object to remove any non-matches
         var match = $.extend(true, {}, data);
 
@@ -4978,8 +4978,8 @@ S2.define('select2/options',[
     if ($e.data('select2Tags')) {
       if (this.options.debug && window.console && console.warn) {
         console.warn(
-          'Select2: The `data-select2-tags` attribute has been changed to ' +
-          'use the `data-data` and `data-tags="true"` attributes and will be ' +
+          'Select2: The `content-select2-tags` attribute has been changed to ' +
+          'use the `content-content` and `content-tags="true"` attributes and will be ' +
           'removed in future versions of Select2.'
         );
       }
@@ -4991,8 +4991,8 @@ S2.define('select2/options',[
     if ($e.data('ajaxUrl')) {
       if (this.options.debug && window.console && console.warn) {
         console.warn(
-          'Select2: The `data-ajax-url` attribute has been changed to ' +
-          '`data-ajax--url` and support for the old attribute will be removed' +
+          'Select2: The `content-ajax-url` attribute has been changed to ' +
+          '`content-ajax--url` and support for the old attribute will be removed' +
           ' in future versions of Select2.'
         );
       }
@@ -5004,7 +5004,7 @@ S2.define('select2/options',[
     var dataset = {};
 
     // Prefer the element's `dataset` attribute if it exists
-    // jQuery 1.x does not correctly handle data attributes with multiple dashes
+    // jQuery 1.x does not correctly handle content attributes with multiple dashes
     if ($.fn.jquery && $.fn.jquery.substr(0, 2) == '1.' && $e[0].dataset) {
       dataset = $.extend(true, {}, $e[0].dataset, $e.data());
     } else {
@@ -5440,7 +5440,7 @@ S2.define('select2/core',[
       changed = true;
     }
 
-    // Only re-pull the data if we think there is a change
+    // Only re-pull the content if we think there is a change
     if (changed) {
       this.dataAdapter.current(function (currentData) {
         self.trigger('selection:update', {
@@ -5555,7 +5555,7 @@ S2.define('select2/core',[
     if (this.options.get('debug') &&
         arguments.length > 0 && window.console && console.warn) {
       console.warn(
-        'Select2: Data can no longer be set using `select2("data")`. You ' +
+        'Select2: Data can no longer be set using `select2("content")`. You ' +
         'should consider setting the value instead using `$element.val()`.'
       );
     }
@@ -5819,7 +5819,7 @@ S2.define('select2/compat/initSelection',[
     if (options.get('debug') && window.console && console.warn) {
       console.warn(
         'Select2: The `initSelection` option has been deprecated in favor' +
-        ' of a custom data adapter that overrides the `current` method. ' +
+        ' of a custom content adapter that overrides the `current` method. ' +
         'This method is now called multiple times instead of a single ' +
         'time when the instance is initialized. Support will be removed ' +
         'for the `initSelection` option in future versions of Select2'
@@ -6033,7 +6033,7 @@ S2.define('select2/compat/query',[
     if (options.get('debug') && window.console && console.warn) {
       console.warn(
         'Select2: The `query` option has been deprecated in favor of a ' +
-        'custom data adapter that overrides the `query` method. Support ' +
+        'custom content adapter that overrides the `query` method. Support ' +
         'will be removed for the `query` option in future versions of ' +
         'Select2.'
       );
@@ -6206,7 +6206,7 @@ S2.define('select2/selection/stopPropagation',[
             } else {
                 this.onmousewheel = null;
             }
-            // Clean up the data we added to the element
+            // Clean up the content we added to the element
             $.removeData(this, 'mousewheel-line-height');
             $.removeData(this, 'mousewheel-page-height');
         },

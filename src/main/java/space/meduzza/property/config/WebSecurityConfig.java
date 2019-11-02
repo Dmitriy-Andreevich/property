@@ -24,58 +24,84 @@ import java.util.Arrays;
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${facebook.appId}")
     private String facebookId;
+
     @Value("${facebook.appSecret}")
     private String facebookSecret;
+
     @Value("${google.appId}")
     private String googleId;
+
     @Value("${google.appSecret}")
     private String googleSecret;
+
     @Value("${github.appId}")
     private String githubId;
+
     @Value("${github.appSecret}")
     private String githubSecret;
 
 
     private final SignUpAdapter signUpAdapter;
+
     private final UserService userService;
+
     private final PasswordEncoder passwordEncoder;
 
-    public WebSecurityConfig(SignUpAdapter signUpAdapter, UserService userService, PasswordEncoder passwordEncoder) {
+    public WebSecurityConfig(
+            final SignUpAdapter signUpAdapter,
+            final UserService userService,
+            final PasswordEncoder passwordEncoder
+    ) {
         this.signUpAdapter = signUpAdapter;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userService)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf()
+                .disable()
                 .authorizeRequests()
-                .antMatchers("/login*", "/signin/**", "/signup/**", "/images/**", "/vendor/**", "/fonts/**", "/css/**", "/js/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/login*",
+                             "/signin/**",
+                             "/signup/**",
+                             "/images/**",
+                             "/vendor/**",
+                             "/fonts/**",
+                             "/css/**",
+                             "/js/**",
+                             "/error")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll();
+                .formLogin()
+                .loginPage("/login")
+                .permitAll();
     }
 
     @Bean
-    public ProviderSignInController providerSignInController(ConnectionFactoryRegistry connectionFactoryRegistry)  {
+    public ProviderSignInController providerSignInController(final ConnectionFactoryRegistry connectionFactoryRegistry) {
 
-        InMemoryUsersConnectionRepository inMemoryUsersConnectionRepository = new InMemoryUsersConnectionRepository(connectionFactoryRegistry);
+        InMemoryUsersConnectionRepository inMemoryUsersConnectionRepository = new InMemoryUsersConnectionRepository(
+                connectionFactoryRegistry);
         inMemoryUsersConnectionRepository.setConnectionSignUp(signUpAdapter);
 
-        return new ProviderSignInController(
-                connectionFactoryRegistry,
-                inMemoryUsersConnectionRepository,
-                new CustomSignInAdapter());
+        return new ProviderSignInController(connectionFactoryRegistry,
+                                            inMemoryUsersConnectionRepository,
+                                            new CustomSignInAdapter());
     }
 
     @Bean
-    public ConnectionFactoryRegistry connectionFactoryRegistry(){
+    public ConnectionFactoryRegistry connectionFactoryRegistry() {
         ConnectionFactoryRegistry connectionFactoryRegistry = new ConnectionFactoryRegistry();
         FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(facebookId, facebookSecret);
         GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(googleId, googleSecret);
@@ -83,11 +109,9 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         facebookConnectionFactory.setScope("email");
         googleConnectionFactory.setScope("email");
         gitHubConnectionFactory.setScope("user:email");
-        connectionFactoryRegistry.setConnectionFactories(Arrays.asList(
-                facebookConnectionFactory,
-                googleConnectionFactory,
-                gitHubConnectionFactory
-        ));
+        connectionFactoryRegistry.setConnectionFactories(Arrays.asList(facebookConnectionFactory,
+                                                                       googleConnectionFactory,
+                                                                       gitHubConnectionFactory));
         return connectionFactoryRegistry;
     }
 
