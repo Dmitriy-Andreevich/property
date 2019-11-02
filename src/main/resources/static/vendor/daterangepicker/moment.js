@@ -419,7 +419,7 @@
             }
 
             if (data) {
-                // moment.duration._locale = moment._locale = data;
+                // moment.duration._locale = moment._locale = content;
                 globalLocale = data;
             }
         }
@@ -483,7 +483,7 @@
         return locales[name];
     }
 
-    // returns locale data
+    // returns locale content
     function locale_locales__getLocale (key) {
         var locale;
 

@@ -15,14 +15,17 @@ import java.util.List;
 @Builder(toBuilder = true)
 @Entity
 @Table(name = "users")
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
     @Email
     @Column(unique = true)
     private String email;
+
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false)
     private String authorities;
+
     @ToString.Exclude
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
     private List<PropertyEntity> properties;

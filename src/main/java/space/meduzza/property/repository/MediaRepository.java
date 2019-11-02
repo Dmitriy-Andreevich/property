@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface MediaRepository extends JpaRepository<MediaEntity, Long> {
     List<MediaEntity> findAllByPropertyId(long propertyId);
-    void deleteAllByPropertyId(long propertyId);
+
+    void deleteAllByPropertyId(final long propertyId);
 }

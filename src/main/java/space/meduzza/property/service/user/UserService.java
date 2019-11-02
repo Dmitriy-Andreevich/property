@@ -10,16 +10,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface UserService extends UserDetailsService {
-    UserEntity createUser(String email, String password);
+    UserEntity createUser(
+            String email,
+            String password
+    );
+
     UserEntity createUserIfNotExist(String email);
+
     Optional<UserEntity> findUserById(long id);
+
     Optional<UserEntity> findUserByEmail(String email);
 
     static List<SimpleGrantedAuthority> getAuthorities(UserEntity userEntity) {
-        return Arrays.stream(
-                userEntity
-                        .getAuthorities()
-                        .split(",")
-        ).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return Arrays
+                .stream(userEntity
+                                .getAuthorities()
+                                .split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 }

@@ -14,41 +14,50 @@ import java.util.NoSuchElementException;
 public class AuthenticationFacadeImpl implements AuthenticationFacade {
     private final UserService userService;
 
-    public AuthenticationFacadeImpl(UserService userService) {
+    public AuthenticationFacadeImpl(final UserService userService) {
         this.userService = userService;
     }
 
     @Override
     public Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
+        return SecurityContextHolder
+                .getContext()
+                .getAuthentication();
     }
 
     @Override
     public String getCurrentUserName() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
     }
 
     @Override
     public UserEntity findCurrentUser() throws NoSuchElementException {
-        return userService.findUserByEmail(getCurrentUserName()).orElseThrow();
+        return userService
+                .findUserByEmail(getCurrentUserName())
+                .orElseThrow();
     }
 
     @Override
-    public boolean isOwnerResource(long resourceOwnerId) {
+    public boolean isOwnerResource(final long resourceOwnerId) {
         return findCurrentUser().getId() == resourceOwnerId;
     }
 
     @Override
-    public boolean isOwnerResourceWithException(long resourceOwnerId) throws AccessDeniedException {
-        if(isOwnerResource(resourceOwnerId))
-            return true;
-        throw new AccessDeniedException("Access Denied!");
+    public void isOwnerResourceWithException(
+            final long resourceOwnerId,
+            @NotNull
+            final String errorMessage
+    ) throws AccessDeniedException {
+        if (isOwnerResource(resourceOwnerId)) {
+            throw new AccessDeniedException(errorMessage);
+        }
     }
 
     @Override
-    public boolean isOwnerResourceWithException(long resourceOwnerId, @NotNull String errorMessage) throws AccessDeniedException {
-        if(isOwnerResource(resourceOwnerId))
-            return true;
-        throw new AccessDeniedException(errorMessage);
+    public void isOwnerResourceWithException(final long resourceOwnerId) throws AccessDeniedException {
+        isOwnerResourceWithException(resourceOwnerId, "Access Denied!");
     }
 }

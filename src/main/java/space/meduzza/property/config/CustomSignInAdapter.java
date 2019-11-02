@@ -12,12 +12,24 @@ import java.util.Collections;
 
 @Component
 class CustomSignInAdapter implements SignInAdapter {
-    public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
-                connection.getDisplayName() != null ? connection.getDisplayName() : connection.fetchUserProfile().getEmail(),
-                null,
-                Collections.singletonList(new SimpleGrantedAuthority(connection.getKey().getProviderId().toUpperCase()))
-        ));
+    public String signIn(
+            final String userId,
+            Connection<?> connection,
+            final NativeWebRequest request
+    ) {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(new UsernamePasswordAuthenticationToken(connection.getDisplayName() != null
+                                                                                   ? connection.getDisplayName()
+                                                                                   : connection
+                                                                                           .fetchUserProfile()
+                                                                                           .getEmail(),
+                                                                           null,
+                                                                           Collections.singletonList(new SimpleGrantedAuthority(
+                                                                                   connection
+                                                                                           .getKey()
+                                                                                           .getProviderId()
+                                                                                           .toUpperCase()))));
         return "/";
     }
 }
