@@ -3,7 +3,6 @@ package space.meduzza.property.service.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import space.meduzza.property.model.UserEntity;
 import space.meduzza.property.repository.UserRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,14 +29,16 @@ class UserServiceImplTest {
         public UserService userService() {
             return new UserServiceImpl();
         }
+
         @Bean
-        public PasswordEncoder passwordEncoder(){
+        public PasswordEncoder passwordEncoder() {
             return new BCryptPasswordEncoder();
         }
     }
 
     @MockBean
     private UserRepository userRepository;
+
     @Autowired
     private UserServiceImpl userServiceImpl;
 
@@ -59,13 +59,12 @@ class UserServiceImplTest {
     void loadUserByUsername() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
-        assertThat(userServiceImpl.loadUserByUsername(user.getEmail()))
-                .isNotNull();
+        assertThat(userServiceImpl.loadUserByUsername(user.getEmail())).isNotNull();
     }
 
     @Test
     void createUser() {
-        when(userRepository.save(any(UserEntity.class))).then(e->e.getArgument(0));
+        when(userRepository.save(any(UserEntity.class))).then(e -> e.getArgument(0));
         UserEntity test = userServiceImpl.createUser(user.getEmail(), "test");
         assertThat(test).isNotNull();
     }
@@ -80,14 +79,12 @@ class UserServiceImplTest {
     @Test
     void findUserById() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-        assertThat(userServiceImpl.findUserById(user.getId()))
-                .isNotNull();
+        assertThat(userServiceImpl.findUserById(user.getId())).isNotNull();
     }
 
     @Test
     void findUserByEmail() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-        assertThat(userServiceImpl.findUserByEmail(user.getEmail()))
-                .isNotNull();
+        assertThat(userServiceImpl.findUserByEmail(user.getEmail())).isNotNull();
     }
 }

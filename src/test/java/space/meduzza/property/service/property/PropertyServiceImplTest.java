@@ -42,10 +42,13 @@ class PropertyServiceImplTest {
 
     @Autowired
     private PropertyService propertyService;
+
     @MockBean
     private PropertyRepository propertyRepository;
+
     @MockBean
     private MediaService mediaService;
+
     @MockBean
     private AuthenticationFacade authenticationFacade;
 
@@ -58,7 +61,8 @@ class PropertyServiceImplTest {
                 .password("test")
                 .build();
 
-        property = PropertyEntity.builder()
+        property = PropertyEntity
+                .builder()
                 .title("test")
                 .address("test")
                 .coordinates(new GeometryFactory().createPoint(new Coordinate(1, 1)))
@@ -77,8 +81,7 @@ class PropertyServiceImplTest {
         when(propertyRepository.save(property)).then(i -> i.getArgument(0));
         when(mediaService.attachMedia(any(), any())).thenReturn(emptyList());
         PropertyEntity property = propertyService.createProperty(this.property, emptyList());
-        assertThat(property)
-                .isNotNull();
+        assertThat(property).isNotNull();
     }
 
     @Test
@@ -89,8 +92,7 @@ class PropertyServiceImplTest {
         when(propertyRepository.save(property)).then(i -> i.getArgument(0));//возвращает то что пришло на вход но не null
         when(propertyRepository.findById(id)).thenReturn(Optional.of(property));
         PropertyEntity actual = propertyService.updateProperty(id, property.setTitle(newTitle));
-        assertThat(actual)
-                .isNotNull();
+        assertThat(actual).isNotNull();
         assertNotEquals(actual.getTitle(), oldTitle);
         property.setTitle(oldTitle);
     }
@@ -99,8 +101,7 @@ class PropertyServiceImplTest {
     void findPropertyById() {
         long id = 1;
         when(propertyRepository.findById(id)).thenReturn(Optional.of(property));
-        assertThat(propertyService.findPropertyById(id))
-                .isNotNull();
+        assertThat(propertyService.findPropertyById(id)).isNotNull();
     }
 
 
@@ -114,7 +115,10 @@ class PropertyServiceImplTest {
 
     @Test
     void getAllPropertiesByCoordinates() {
-        when(propertyRepository.findAllPropertyInRange(any(BigDecimal.class),any(BigDecimal.class),anyInt(), any(Pageable.class))).thenReturn(new PageImpl<>(List.of(property)));
+        when(propertyRepository.findAllPropertyInRange(any(BigDecimal.class),
+                                                       any(BigDecimal.class),
+                                                       anyInt(),
+                                                       any(Pageable.class))).thenReturn(new PageImpl<>(List.of(property)));
         assertThat(propertyService.getAllPropertiesByCoordinates(BigDecimal.ONE, BigDecimal.ONE, 10, 1))
                 .isNotNull()
                 .hasSize(1);
